@@ -68,4 +68,5 @@ shopSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// We are exporting mongoose model so that we can use methods for CRUD operations 
 module.exports = mongoose.model("Shop", shopSchema);
