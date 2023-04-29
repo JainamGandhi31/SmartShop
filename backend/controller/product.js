@@ -3,7 +3,7 @@ const { isSeller, isAuthenticated } = require("../middleware/auth");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const router = express.Router();
 const Product = require("../model/product");
-// const Order = require("../model/order");
+const Order = require("../model/order");
 const Shop = require("../model/shop");
 const { upload } = require("../multer");
 const ErrorHandler = require("../utils/ErrorHandler");
@@ -153,7 +153,7 @@ router.put(
         avg += rev.rating;
       });
 
-      product.ratings = avg / product.reviews.length;
+      product.ratings = Math.floor(avg / product.reviews.length);
 
       await product.save({ validateBeforeSave: false });
 
@@ -165,7 +165,7 @@ router.put(
 
       res.status(200).json({
         success: true,
-        message: "Reviwed succesfully!",
+        message: "Review posted succesfully!",
       });
     } catch (error) {
       return next(new ErrorHandler(error, 400));
