@@ -10,6 +10,7 @@ const { upload } = require("../multer");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendShopToken = require("../utils/shopToken");
+const Product = require("../model/product");
 
 // create shop
 router.post("/create-shop", upload.single("file"), async (req, res, next) => {
@@ -213,16 +214,28 @@ router.put(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const existsUser = await Shop.findById(req.seller._id);
+      // const existingProducts = await Product.find({ shopId: req.seller._id });
+      // // console.log(existingProducts);
 
       const existAvatarPath = `uploads/${existsUser.avatar}`;
+      
+      // fs.unlinkSync(existAvatarPath);
+      
+      // existingProducts.forEach(element => {
+      //   const productAvatarPath = `uploads/${element.shop.avatar}`;
+      //   fs.unlink(productAvatarPath);
+      // });
 
-      fs.unlinkSync(existAvatarPath);
-
+      
       const fileUrl = path.join(req.file.filename);
-
+      
       const seller = await Shop.findByIdAndUpdate(req.seller._id, {
         avatar: fileUrl,
       });
+      
+      // await Product.updateMany({shopId: req.seller._id}, {
+      //   $set: {"shop.avatar": fileUrl}
+      // });
 
       res.status(200).json({
         success: true,
