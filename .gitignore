@@ -2,3 +2,4 @@ node_modules/
 backend/config/
 socket/node_modules
 socket/.env
+frontend/node_modules
